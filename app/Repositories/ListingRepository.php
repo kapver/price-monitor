@@ -8,9 +8,12 @@ use App\Models\Listing;
 
 class ListingRepository
 {
-    public function findOrCreate($url): Listing
+    public function findOrCreate(array $data): Listing
     {
-        return Listing::firstOrCreate(['url' => $url]);
+        return Listing::firstOrCreate(['url' => $data['url']], [
+            'title' => $data['title'],
+            'price' => $data['price'],
+        ]);
     }
 
     public function hasUserSubscribed(string $email, string $url): bool
