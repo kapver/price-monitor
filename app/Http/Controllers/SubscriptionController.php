@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Listing;
+use App\Notifications\PriceUpdateNotification;
 use Illuminate\View\View;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 
 use App\Services\SubscriptionService;
-use App\Exceptions\ScraperResponseException;
+use App\Exceptions\ExtractorResponseException;
 use App\Http\Requests\StoreSubscriptionRequest;
 
 class SubscriptionController extends Controller
 {
     public function __construct(
-        private readonly SubscriptionService $subscriptionService,
+        private SubscriptionService $subscriptionService,
     ) {
     }
 
-    public function create(): View
+    public function index(): View
     {
-        return view('subscription.create');
+        return view('subscription.index', ['items' => Listing::all()]);
     }
 
     public function store(StoreSubscriptionRequest $request): RedirectResponse
@@ -27,9 +28,9 @@ class SubscriptionController extends Controller
         try {
             $data = $request->validated();
             $this->subscriptionService->addSubscription($data['url'], $data['email']);
-            return redirect()->route('subscription.success', $data);
+            return redirect()->route('subscription.index')->with('message', 'Subscription created successfully.');
         } catch (\Throwable $exception) {
-            $message = $exception instanceof ScraperResponseException
+            $message = $exception instanceof ExtractorResponseException
                 ? 'Wrong provided url.'
                 : $exception->getMessage();
 
@@ -37,13 +38,5 @@ class SubscriptionController extends Controller
                 ->with('error', $message)
                 ->withInput();
         }
-    }
-
-    public function success(Request $request)
-    {
-        return view('subscription.success', [
-            'url' => $request->input('url'),
-            'email' => $request->input('email')
-        ]);
     }
 }

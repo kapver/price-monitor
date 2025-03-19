@@ -5,9 +5,20 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Models\Listing;
+use Illuminate\Support\Collection;
 
 class ListingRepository
 {
+    public function findById(int $id): Listing
+    {
+        return Listing::find($id);
+    }
+
+    public function findByUrl(string $url): Listing
+    {
+        return Listing::whereUrl($url)->first();
+    }
+
     public function findOrCreate(array $data): Listing
     {
         return Listing::firstOrCreate(['url' => $data['url']], [
@@ -24,5 +35,10 @@ class ListingRepository
             ->where('users.email', $email)
             ->where('listings.url', $url)
             ->exists();
+    }
+
+    public function getSubscribed(): Collection
+    {
+        return Listing::has('users')->get();
     }
 }
