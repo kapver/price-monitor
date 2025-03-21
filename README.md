@@ -6,6 +6,15 @@ The Price Monitor is a Laravel 12-based web service allowing users to subscribe 
 New users are registered and subscribed instantly but remain unverified until email confirmation. Price monitoring and email notifications are processed only for verified users. 
 The dashboard and subscription management available for verified authenticated users.
 
+### Price Update 
+Scheduled HOURLY or Run Manually
+
+   ```bash
+      php artisan subscriptions:process
+   ```
+
+**Notice: All initial listing prices have been increased by 100 UAH for testing purposes.**
+
 ### Supported sources
  - OLX.ua listing page
 
@@ -32,33 +41,36 @@ The dashboard and subscription management available for verified authenticated u
 
 3. **Install dependencies and start the service**
    ```bash
-   composer install
-   npm install && npm run build
-   touch database/database.sqlite
-   php artisan migrate:fresh --seed
-   composer run dev
+   chmod +x ./install.sh && ./install.sh
    ```
 
 4. **Preview the application**  
    Open your browser and navigate to:  
-   [http://127.0.0.1:8000](http://127.0.0.1:8000)
+   [http://127.0.0.1:8001](http://127.0.0.1:8001)
 
 
 5. **Subscribe Page**
    For unauthorized users
-   [http://127.0.0.1:8000/subscribe](http://127.0.0.1:8000/subscribe)
+   [http://127.0.0.1:8001/subscribe](http://127.0.0.1:8001/subscribe)
    ![Settings Screenshot](public/images/subscribe-landing.png)
 
 
 6. **Manage Subscriptions**  
    You can configure your preferred weather conditions and notification settings by navigating to:  
-   [http://127.0.0.1:8000/subscriptions](http://127.0.0.1:8000/subscriptions)
+   [http://127.0.0.1:8001/subscriptions](http://127.0.0.1:8001/subscriptions)
    ![Settings Screenshot](public/images/subscriptions.png)
 
-7. **Manual subscriptions check**
-   ```bash
-   php artisan subscriptions:process
-   ```
+7. **Check Emails Sent with Mailpit**  
+   You can view any emails sent by the service by navigating to:  
+   [http://localhost:8025/](http://localhost:8025/)
+
+
+8. **Test User Account:**  
+   You can log in using the following credentials:
+
+- **Email:** test@example.com
+- **Password:** password
+- Default password for subscription flow users is "password"
 
 
 ### Flowchart Diagram

@@ -56,6 +56,10 @@ class SubscriptionService
     private function createListing($url): Listing
     {
         $data = $this->fetchListing($url);
+
+        // For manual testing purposes to don't wait for real price changed
+        $data['price'] = $data['price'] + 100;
+
         return $this->listingRepository->findOrCreate($data);
     }
 

@@ -29,6 +29,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 });
 
+// Route::get('subscribe', function () {
+//     \Illuminate\Support\Facades\Redis::set('test_key', 'Hello Redis');
+// })->name('subscribe');
+
 Route::get('subscribe', Subscribe::class)->name('subscribe');
 Route::get('subscribed', Subscribed::class)->name('subscribed');
 
