@@ -65,6 +65,7 @@ class SubscriptionService
     private function fetchListing(string $url): array
     {
         // PHP 8.4+ supports direct method invocation on new instances
+        // TODO move to factory for multiple sources
         return new ListingExtractor()->execute($url);
     }
 

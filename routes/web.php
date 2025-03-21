@@ -32,6 +32,9 @@ Route::middleware(['auth'])->group(function () {
 Route::get('subscribe', Subscribe::class)->name('subscribe');
 Route::get('subscribed', Subscribed::class)->name('subscribed');
 
+/**
+ * Old implementation
+ */
 Route::get('subscription', [SubscriptionController::class, 'index'])->name('subscription.index');
 Route::post('subscription', [SubscriptionController::class, 'store'])->name('subscription.store');
 

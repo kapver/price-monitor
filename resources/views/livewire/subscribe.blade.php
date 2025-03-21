@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-6" xmlns:flux="http://www.w3.org/1999/html">
-    <x-auth-header :title="__('Subscribe to price update')" :description="__('')" />
+    <x-auth-header :title="__('Subscribe for price updates')" :description="__('')" />
 
     <form wire:submit="subscribe" class="flex flex-col gap-6">
         <!-- Listing Url -->
