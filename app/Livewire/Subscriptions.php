@@ -21,6 +21,7 @@ class Subscriptions extends Component
         $state = $service->addSubscription(auth()->user()->email, $this->url);
 
         session()->flash('message', $state->getMessage());
+        $this->dispatch('hide-form');
     }
 
     public function deleteItem(SubscriptionService $service, $id): void

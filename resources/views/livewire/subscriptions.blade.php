@@ -1,4 +1,4 @@
-<div x-data="{ showForm: false }" class="flex flex-col gap-6">
+<div x-data="{ showForm: false }" x-on:hide-form.window="showForm = false" class="flex flex-col gap-6">
     @if (session('message'))
         <div class="alert alert-success">
             {{ session('message') }}
@@ -18,10 +18,12 @@
         </div>
 
         <div class="flex gap-4">
-            <button wire:click="addSubscription" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 w-fit">
+            <button wire:click="addSubscription"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 w-fit">
                 Add Subscription
             </button>
-            <button @click="showForm = false" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 w-fit">
+            <button @click="showForm = false"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 w-fit">
                 Cancel
             </button>
         </div>
@@ -30,6 +32,7 @@
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
+            <th scope="col" class="px-6 py-3">Image</th>
             <th scope="col" class="px-6 py-3">Title</th>
             <th scope="col" class="px-6 py-3">Url</th>
             <th scope="col" class="px-6 py-3">Price</th>
@@ -39,6 +42,11 @@
         <tbody>
         @foreach($items as $item)
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <td class="px-6 py-4">
+                    <div class="w-12 h-12 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center">
+                        <span class="text-gray-400 dark:text-gray-400">No Image</span>
+                    </div>
+                </td>
                 <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     {{ $item['title'] }}
                 </th>
