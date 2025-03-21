@@ -23,38 +23,30 @@ The dashboard and subscription management available for verified authenticated u
 
 3. **Install dependencies and start the service**
    ```bash
-   chmod +x ./install.sh && ./install.sh
+   composer install
+   npm install && npm run build
+   touch database/database.sqlite
+   php artisan migrate:fresh --seed
+   composer run dev
    ```
 
 4. **Preview the application**  
    Open your browser and navigate to:  
-   [http://127.0.0.1:8001](http://127.0.0.1:8001)
+   [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 
 5. **Subscribe Page**
    For unauthorized users
-   [http://127.0.0.1:8001/user/subscriptions](http://127.0.0.1:8001/user/settings)
+   [http://127.0.0.1:8000/user/subscribe](http://127.0.0.1:8000/subscribe)
    ![Settings Screenshot](public/images/subscribe-landing.png)
 
 
-5. **Manage Subscriptions**  
+6. **Manage Subscriptions**  
    You can configure your preferred weather conditions and notification settings by navigating to:  
-   [http://127.0.0.1:8001/user/subscriptions](http://127.0.0.1:8001/user/settings)
+   [http://127.0.0.1:8000/subscriptions](http://127.0.0.1:8000/subscriptions)
    ![Settings Screenshot](public/images/subscriptions.png)
 
 
-6. **Check Emails Sent with Mailpit**  
-   You can view any emails sent by the service by navigating to:  
-   [http://localhost:8025/](http://localhost:8025/)
-
-
-7. **Test User Account:**  
-You can log in using the following credentials:
-
-- **Email:** test@weather.io
-- **Password:** 111
-
-> **Note:** The host machine is assumed to lack PHP and Composer, so a workaround is implemented under the hood.
 
 ### Flowchart Diagram
 
