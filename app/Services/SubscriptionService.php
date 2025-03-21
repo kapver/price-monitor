@@ -95,6 +95,8 @@ class SubscriptionService
                     'old_price' => $listing->price,
                     'new_price' => $data['price'],
                 ]));
+                $listing->price = $data['price'];
+                $listing->save();
             });
         }
     }

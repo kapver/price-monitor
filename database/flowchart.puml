@@ -1,0 +1,31 @@
+@startuml
+
+start
+:Enter URL & Email on Landing Page;
+:[POST /subscribe];
+
+if (First Subscription?) then (Yes)
+  :Register User;
+endif
+
+:Create Subscription;
+:Send Verification Email;
+
+if (User Verified?) then (Yes)
+  split
+    :Dashboard;
+  split again
+    :Manage Subscriptions;
+  split again
+    :Background Job: Check Price;
+    :Parse OLX Page or API;
+    if (Price Changed?) then (Yes)
+      :Cache Price;
+      :Send Email;
+    endif
+  end split
+endif
+
+stop
+
+@enduml

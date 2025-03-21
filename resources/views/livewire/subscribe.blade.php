@@ -6,6 +6,7 @@
         <div class="relative">
             <flux:input
                 wire:model="url"
+                :label="__('Listing Url')"
                 type="text"
                 required
                 autocomplete="url"
@@ -16,6 +17,7 @@
         <!-- Email Address -->
         <flux:input
                 wire:model="email"
+                :label="__('Email address')"
                 type="email"
                 required
                 autofocus

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Models\Listing;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class ListingRepository
@@ -39,6 +40,8 @@ class ListingRepository
 
     public function getSubscribed(): Collection
     {
-        return Listing::has('users')->get();
+        return Listing::whereHas('users', function(Builder $query) {
+            $query->whereNotNull('users.email_verified_at');
+        })->get();
     }
 }
