@@ -7,7 +7,16 @@ New users are registered and subscribed instantly but remain unverified until em
 The dashboard and subscription management available for verified authenticated users.
 
 ### Supported sources
- - OLX.ua
+ - OLX.ua listing page
+
+### HTTP method to subscribe    
+   **POST** /subscription
+
+   Creates a subscription to track price changes for an OLX listing.
+
+   Parameters:  
+   email — User’s email address to receive price update notifications.  
+   url — URL of the OLX listing to monitor.
 
 ### Steps to Run the Service
 
@@ -37,7 +46,7 @@ The dashboard and subscription management available for verified authenticated u
 
 5. **Subscribe Page**
    For unauthorized users
-   [http://127.0.0.1:8000/user/subscribe](http://127.0.0.1:8000/subscribe)
+   [http://127.0.0.1:8000/subscribe](http://127.0.0.1:8000/subscribe)
    ![Settings Screenshot](public/images/subscribe-landing.png)
 
 
@@ -46,6 +55,10 @@ The dashboard and subscription management available for verified authenticated u
    [http://127.0.0.1:8000/subscriptions](http://127.0.0.1:8000/subscriptions)
    ![Settings Screenshot](public/images/subscriptions.png)
 
+7. **Manual subscriptions check**
+   ```bash
+   php artisan subscriptions:process
+   ```
 
 
 ### Flowchart Diagram
