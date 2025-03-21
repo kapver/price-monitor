@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\SubscriptionState;
 use App\Jobs\ListingExtractorJob;
+use App\Models\Listing;
+use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Repositories\ListingRepository;
 use App\Exceptions\ExtractorUrlException;
 use App\Notifications\PriceUpdateNotification;
 use App\Services\Etl\Sources\Olx\ListingExtractor;
-use App\Exceptions\UniqueListingSubscriptionException;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionService
 {
@@ -21,22 +24,39 @@ class SubscriptionService
     ) {
     }
 
-    /**
-     * @throws UniqueListingSubscriptionException
-     * @throws ExtractorUrlException
-     */
-    public function addSubscription($url, $email): void
+    public function addSubscription($email, $url): SubscriptionState
     {
-        $data = $this->fetchListing($url);
-        // $data['price'] = $data['price'] + 100;
-        $user = $this->userRepository->findOrCreate($email);
-        $listing = $this->listingRepository->findOrCreate($data);
+        $user = $this->userRepository->findByEmail($email) ?? $this->createUser($email);
+        $listing = $this->listingRepository->findByUrl($url) ?? $this->createListing($url);
 
         if ($this->userRepository->hasListing($user->id, $listing->id)) {
-            throw new UniqueListingSubscriptionException();
+            return $user->email_verified_at
+                ? SubscriptionState::EXISTING
+                : SubscriptionState::EXISTING_UNVERIFIED;
         }
 
-        $this->userRepository->attachListing($user->id, $listing->id);
+        if (!$this->userRepository->hasListing($user->id, $listing->id)) {
+            $this->userRepository->attachListing($user->id, $listing->id);
+        }
+
+        return $user->email_verified_at
+            ? SubscriptionState::SUBSCRIBED
+            : SubscriptionState::SUBSCRIBED_UNVERIFIED;
+    }
+
+    private function createUser($email): User
+    {
+        $user = $this->userRepository->create($email, $password);
+
+        event(new Registered($user));
+        Auth::login($user);
+        return $user;
+    }
+
+    private function createListing($url): Listing
+    {
+        $data = $this->fetchListing($url);
+        return $this->listingRepository->findOrCreate($data);
     }
 
     /**
@@ -57,12 +77,16 @@ class SubscriptionService
         }
     }
 
+    /**
+     * Sends notification email
+     * @param array $data
+     * @return void
+     */
     public function onListingExtracted(array $data): void
     {
         $listing = $this->listingRepository->findByUrl($data['url']);
 
-        Log::debug(__METHOD__, [$listing->id, $data['price'], $listing->price]);
-
+        // TODO consider to move price condition to extractor job
         if ($data['price'] != $listing->price) {
             $listing->users->each(function ($user) use ($data, $listing) {
                 $user->notify(new PriceUpdateNotification([
@@ -73,5 +97,10 @@ class SubscriptionService
                 ]));
             });
         }
+    }
+
+    public function removeSubscription(User $user, int $listing_id): void
+    {
+        $user->listings()->detach($listing_id);
     }
 }

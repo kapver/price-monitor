@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\UniqueSubscription;
+use App\Rules\ValidUrlSource;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreSubscriptionRequest extends FormRequest
@@ -24,7 +25,12 @@ class StoreSubscriptionRequest extends FormRequest
     {
         return [
             'email' => 'required|email',
-            'url' => ['required', 'url', new UniqueSubscription()],
+            'url' => [
+                'required',
+                'url',
+                // new UniqueSubscription(),
+                new ValidUrlSource()
+            ],
         ];
     }
 }

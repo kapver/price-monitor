@@ -14,7 +14,7 @@ class ListingRepository
         return Listing::find($id);
     }
 
-    public function findByUrl(string $url): Listing
+    public function findByUrl(string $url): ?Listing
     {
         return Listing::whereUrl($url)->first();
     }

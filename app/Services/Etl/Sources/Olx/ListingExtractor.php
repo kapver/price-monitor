@@ -4,6 +4,7 @@ namespace App\Services\Etl\Sources\Olx;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 use App\Exceptions\ExtractorUrlException;
@@ -11,6 +12,8 @@ use App\Exceptions\ExtractorResponseException;
 
 class ListingExtractor
 {
+    private bool $skip_cache = true;
+
     private bool $parse_from_js = true;
 
     public function execute(string $url): array
@@ -31,7 +34,10 @@ class ListingExtractor
     {
         $key = md5($url);
 
-        if (!Cache::has($key)) {
+        Log::debug(__METHOD__, ['url' => $url]);
+
+        if ($this->skip_cache || !Cache::has($key)) {
+
             $response = Http::get($url);
 
             if ($response->failed()) {
@@ -39,7 +45,9 @@ class ListingExtractor
             }
 
             $html = $response->body();
-            Storage::put('html' . "/$key.html", $html);
+
+            // Storage::put('html' . "/$key.html", $html);
+
             Cache::put($key, $html, now()->addHour());
 
         }

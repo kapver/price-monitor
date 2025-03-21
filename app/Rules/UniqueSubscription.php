@@ -12,8 +12,8 @@ readonly class UniqueSubscription implements ValidationRule
     {
         $listingRepository = new ListingRepository();
 
-        if ($listingRepository->hasUserSubscribed(request('email'), $value)) {
-            $fail('You already subscribed to this :attribute.');
+        if ($listingRepository->hasUserSubscribed(request('email', ''), $value)) {
+            $fail('Email is already subscribed to this url.');
         }
     }
 }

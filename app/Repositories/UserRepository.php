@@ -4,16 +4,29 @@ namespace App\Repositories;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class UserRepository
 {
-    public function findOrCreate($email): User
+    public function create(string $email, &$password = null): User
     {
-        return User::firstOrCreate(['email' => $email], [
+        $password = $password ?? 'password';
+
+        Log::debug(__METHOD__, ['password' => $password]);
+
+        $password_hash = Hash::make($password);
+
+        return User::create([
             'name' => '',
-            'password' => Hash::make(Str::random(8)),
+            'email' => $email,
+            'password' => $password_hash,
         ]);
+    }
+
+    public function findByEmail(string $email): ?User
+    {
+        return User::whereEmail($email)->first();
     }
 
     public function hasListing($userId, $listingId)

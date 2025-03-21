@@ -3,19 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Listing;
-use App\Notifications\PriceUpdateNotification;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
-
 use App\Services\SubscriptionService;
-use App\Exceptions\ExtractorResponseException;
 use App\Http\Requests\StoreSubscriptionRequest;
 
 class SubscriptionController extends Controller
 {
-    public function __construct(
-        private SubscriptionService $subscriptionService,
-    ) {
+    public function __construct(private SubscriptionService $subscriptionService)
+    {
     }
 
     public function index(): View
@@ -25,18 +21,10 @@ class SubscriptionController extends Controller
 
     public function store(StoreSubscriptionRequest $request): RedirectResponse
     {
-        try {
-            $data = $request->validated();
-            $this->subscriptionService->addSubscription($data['url'], $data['email']);
-            return redirect()->route('subscription.index')->with('message', 'Subscription created successfully.');
-        } catch (\Throwable $exception) {
-            $message = $exception instanceof ExtractorResponseException
-                ? 'Wrong provided url.'
-                : $exception->getMessage();
+        $data = $request->validated();
 
-            return redirect()->back()
-                ->with('error', $message)
-                ->withInput();
-        }
+        $state = $this->subscriptionService->addSubscription($data['email'], $data['url']);
+
+        return redirect()->route('subscription.index')->with('message', $state->getMessage());
     }
 }
