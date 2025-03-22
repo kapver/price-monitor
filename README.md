@@ -8,9 +8,8 @@ The dashboard and subscription management available for verified authenticated u
 
 ### Price Update 
 Scheduled HOURLY or Run Manually
-
    ```bash
-      php artisan subscriptions:process
+      ./vendor/bin/sail artisan subscriptions:process
    ```
 
 **Notice: All initial listing prices have been increased by 100 UAH for testing purposes.**
