@@ -36,12 +36,16 @@ Scheduled HOURLY or Run Manually
 
 2. **Navigate to the project directory**
    ```bash
-   cd price-monitor
+   cd price-monitor && cp .env.example .env
    ```
 
 3. **Install dependencies and start the service**
    ```bash
-   chmod +x ./install.sh && ./install.sh
+   docker compose up
+   ```
+   or
+   ```bash
+   ./vendor/bin/sail up
    ```
 
 4. **Preview the application**  
@@ -70,13 +74,13 @@ Scheduled HOURLY or Run Manually
 
 - **Email:** test@example.com
 - **Password:** password
-- Default password for subscription flow users is "password"
+- Default password for new subscription flow users is "password"
 
 
-### Flowchart Diagram
+### Service flowchart diagram
 
 ![Settings Screenshot](public/images/diagram.png)
 
 ---
 
-Tested on **macOS 15.3.1**
+Tested on **macOS 15.3.2**
