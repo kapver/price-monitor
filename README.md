@@ -18,7 +18,7 @@ Scheduled HOURLY or Run Manually
  - OLX.ua listing page
 
 ### HTTP method to subscribe    
-   **POST** /subscription
+   **POST** http://127.0.0.1:8001/api/subscription
 
    Creates a subscription to track price changes for an OLX listing.
 
