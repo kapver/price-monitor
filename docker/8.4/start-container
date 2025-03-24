@@ -17,7 +17,7 @@ chmod -R ugo+rw /.composer
 
 /usr/bin/composer install
 /usr/bin/php artisan key:generate --ansi
-/usr/bin/php artisan migrate --seed
+/usr/bin/php artisan migrate
 npm install
 npm run build
 /usr/bin/composer run dev
