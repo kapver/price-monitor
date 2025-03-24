@@ -93,7 +93,7 @@ class SubscriptionService
 
         // TODO consider to move price condition to extractor job
         if ($data['price'] != $listing->price) {
-            $listing->users->each(function ($user) use ($data, $listing) {
+            $listing->users()->whereNotNull('email_verified_at')->each(function ($user) use ($data, $listing) {
                 $user->notify(new PriceUpdateNotification([
                     'url' => $listing->url,
                     'title' => $listing->title,

@@ -69,11 +69,7 @@ Scheduled HOURLY or Run Manually
 
 
 8. **Test User Account:**  
-   You can log in using the following credentials:
-
-- **Email:** test@example.com
-- **Password:** password
-- Default password for new subscription flow users is "password"
+    Default password for new subscription flow users is "password"
 
 
 ### Service flowchart diagram
